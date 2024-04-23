@@ -2,6 +2,7 @@
 
 public enum ExplorationOutcome
 {
+    Null,
     Error,
     Timeout,
     Colonizable

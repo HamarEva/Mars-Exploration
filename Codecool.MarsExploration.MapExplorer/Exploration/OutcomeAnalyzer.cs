@@ -10,22 +10,21 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
     {
         _simulationContext = simulationContext;
     }
-
-    public bool SimulationEnds()
-    {
-        return Timeout() || Success() || LackOfResources();
-    }
-    public ExplorationOutcome Outcome()
+    
+    public void Outcome()
     {
         if (Timeout())
         {
-            return ExplorationOutcome.Timeout;
+            _simulationContext.ExplorationOutcome = ExplorationOutcome.Timeout;
         }
         if (Success())
         {
-            return ExplorationOutcome.Colonizable;
+            _simulationContext.ExplorationOutcome = ExplorationOutcome.Colonizable;
         }
-        return ExplorationOutcome.Error;
+        if (LackOfResources())
+        {
+            _simulationContext.ExplorationOutcome = ExplorationOutcome.Error;
+        }
     }
     
     private bool Timeout()

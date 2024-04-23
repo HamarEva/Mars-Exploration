@@ -15,7 +15,7 @@ public class SimulationContext
     public IEnumerable<string> Symbols { get; set; }
     public ExplorationOutcome ExplorationOutcome { get; set; }
 
-    public SimulationContext(int steps, int maxSteps, Rover rover, Coordinate spaceShipLocation, Map map, IEnumerable<string> symbols, ExplorationOutcome explorationOutcome)
+    public SimulationContext(int steps, int maxSteps, Rover rover, Coordinate spaceShipLocation, Map map, IEnumerable<string> symbols)
     {
         Steps = steps;
         MaxSteps = maxSteps;
@@ -23,6 +23,6 @@ public class SimulationContext
         SpaceShipLocation = spaceShipLocation;
         Map = map;
         Symbols = symbols;
-        ExplorationOutcome = explorationOutcome;
+        ExplorationOutcome = ExplorationOutcome.Null;
     }
 }
