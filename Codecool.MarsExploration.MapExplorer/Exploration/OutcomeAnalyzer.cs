@@ -30,7 +30,8 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
                 count++;
             }
         }
-        
+
+        return false;
     }
 
     public bool LackOfResources()
