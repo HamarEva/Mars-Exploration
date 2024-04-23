@@ -4,7 +4,6 @@ namespace Codecool.MarsExploration.MapExplorer.Exploration;
 
 public interface IOutcomeAnalyzer
 {
-    public bool Timeout();
-    public bool Succes();
-    public bool LackOfResources();
+    public bool SimulationEnds();
+    public ExplorationOutcome Outcome();
 }

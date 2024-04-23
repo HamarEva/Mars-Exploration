@@ -7,13 +7,13 @@ public class Rover
     private string ID { get; set; }
     public Coordinate Position { get; set; }
     public int Sight { get; set; }
-    public IGrouping<string,Coordinate> Encountered { get; set; }
+    public Dictionary<string,List<Coordinate>> Encountered { get; set; }
 
-    public Rover(string id, Coordinate position, int sight, IGrouping<string,Coordinate> encountered)
+    public Rover(string id, Coordinate position, int sight)
     {
         ID = id;
         Position = position;
         Sight = sight;
-        Encountered = encountered;
+        Encountered = new Dictionary<string, List<Coordinate>>();
     }
 }

@@ -10,32 +10,46 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
     {
         _simulationContext = simulationContext;
     }
-    public bool Timeout()
-    {
-        if (_simulationContext.Steps == _simulationContext.MaxSteps)
-        {
-            return true;
-        }
 
-        return false;
+    public bool SimulationEnds()
+    {
+        return Timeout() || Success() || LackOfResources();
+    }
+    public ExplorationOutcome Outcome()
+    {
+        if (Timeout())
+        {
+            return ExplorationOutcome.Timeout;
+        }
+        if (Success())
+        {
+            return ExplorationOutcome.Colonizable;
+        }
+        return ExplorationOutcome.Error;
+    }
+    
+    private bool Timeout()
+    {
+        return _simulationContext.Steps == _simulationContext.MaxSteps;
     }
 
-    public bool Succes()
+    private bool Success()
     {
-        int count = 0;
-        foreach (var resource in _simulationContext.Rover.Encountered.Key)
-        {
-            if (resource.Equals('%'))
-            {
-                count++;
-            }
-        }
-
-        return false;
+        return _simulationContext.Rover.Encountered["*"].Count >= 4 &&
+               _simulationContext.Rover.Encountered["%"].Count >= 3;
     }
 
-    public bool LackOfResources()
+    private bool LackOfResources()
     {
-        throw new NotImplementedException();
+        int mapSize = _simulationContext.Map.Representation.GetLength(0) *
+                      _simulationContext.Map.Representation.GetLength(1);
+        
+        int encountered = 0;
+        foreach (var keyValuePair in _simulationContext.Rover.Encountered)
+        {
+            encountered += keyValuePair.Value.Count;
+        }
+
+        return encountered == mapSize;
     }
 }
