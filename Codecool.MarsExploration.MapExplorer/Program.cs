@@ -27,7 +27,7 @@ class Program
             mapFile: mapFile,
             startCoordinate: landingSpot,
             symbols: symbolsToMonitor,
-            timeOut: 100);
+            timeOut: 1000);
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
 
@@ -39,8 +39,13 @@ class Program
         var contextBuilder = new ContextBuilder(configuration,rover,mapLoader,configurationValidator);
         
         
+        
         ExplorationSimulator explorationSimulator = new ExplorationSimulator(contextBuilder);
-       
+
+    
+
+
+
     }
 }
 

@@ -40,7 +40,7 @@ public class MovementRoutines : IMovementRoutines
         
         foreach (var coordinate in adjacentCoordinates)
         {
-            if (_simulationContext.Map.Representation[coordinate.X, coordinate.Y] == ""
+            if (_simulationContext.Map.Representation[coordinate.X, coordinate.Y] == " "
                 && _simulationContext.SpaceShipLocation != coordinate)
             {
                 possibleNextCoordinates.Add(coordinate);

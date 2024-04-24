@@ -30,12 +30,12 @@ public class PlaceRover
 
         foreach (var coordinate in adjacentCoordinates)
         {
-            if (map.Representation[coordinate.X, coordinate.Y] == "")
+            if (map.Representation[coordinate.X, coordinate.Y] == " ")
             {
                 emptyAdjacentCoordinates.Add(coordinate);
             }
         }
 
-        return new Rover(ID, emptyAdjacentCoordinates[0], roverSight);
+        return new Rover(ID, emptyAdjacentCoordinates[0], roverSight, new List<Coordinate>{emptyAdjacentCoordinates[0]});
     }
 }
