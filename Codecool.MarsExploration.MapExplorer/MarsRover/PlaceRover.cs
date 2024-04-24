@@ -36,6 +36,6 @@ public class PlaceRover
             }
         }
 
-        return new Rover("rover-1,", emptyAdjacentCoordinates[0], roverSight);
+        return new Rover("rover-1,", emptyAdjacentCoordinates[0], roverSight, new List<Coordinate>(){emptyAdjacentCoordinates[0]});
     }
 }

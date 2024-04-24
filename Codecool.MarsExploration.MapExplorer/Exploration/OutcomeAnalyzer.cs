@@ -40,8 +40,7 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
 
     private bool LackOfResources()
     {
-        int mapSize = _simulationContext.Map.Representation.GetLength(0) *
-                      _simulationContext.Map.Representation.GetLength(1);
+        int mapSize = _simulationContext.Map.Representation.Length;
         
         int encountered = 0;
         foreach (var keyValuePair in _simulationContext.Rover.Encountered)

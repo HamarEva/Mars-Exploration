@@ -17,7 +17,7 @@ public class ConfigurationValidator : IConfigurationValidator
     //public record Configuration(string mapFile, Coordinate startCoordinate, IEnumerable<string> symbols, int timeOut);
     public bool Validate(Configuration configuration)
     {
-       return IsNotOccupied(configuration) && IsAdjacentIsEmpty(configuration) && isEmpty(configuration) && IsTimeOutGreaterThanZero(configuration) && AreSymblosValid(configuration);
+       return IsNotOccupied(configuration) && IsThereEmptyAdjacent(configuration) && isEmpty(configuration) && IsTimeOutGreaterThanZero(configuration) && AreSymblosValid(configuration);
     }
 
     private Map GetMapFromMapFile(Configuration configuration)
@@ -32,7 +32,7 @@ public class ConfigurationValidator : IConfigurationValidator
         return map[configuration.startCoordinate.X, configuration.startCoordinate.Y] == "";
     }
 
-    private bool IsAdjacentIsEmpty(Configuration configuration)
+    private bool IsThereEmptyAdjacent(Configuration configuration)
     {
         var map = _mapLoader.Load(configuration.mapFile);
         var coordinates =  _coordinateCalculator.GetAdjacentCoordinates(configuration.startCoordinate, map.Dimension);

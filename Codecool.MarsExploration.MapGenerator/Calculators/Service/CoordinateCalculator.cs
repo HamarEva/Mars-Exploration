@@ -33,4 +33,18 @@ public class CoordinateCalculator : ICoordinateCalculator
     {
         return coordinates.SelectMany(c => GetAdjacentCoordinates(c, dimension));
     }
+    
+    public IEnumerable<Coordinate> GetCoordinatesInSight(Coordinate coordinate, int dimension, int sight)
+    {
+        var coordinatesInSight = new List<Coordinate>();
+        for (int i = -sight; i <= sight; i++)
+        {
+            for (int j = -sight; j <= sight; j++)
+            {
+                coordinatesInSight.Add(new Coordinate(coordinate.X+i, coordinate.Y+j));
+            }
+        }
+
+        return coordinatesInSight.Where(c => c.X >= 0 && c.Y >= 0 && c.X < dimension && c.Y < dimension);
+    }
 }
