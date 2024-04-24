@@ -16,36 +16,35 @@ class Program
     public static void Main(string[] args)
     {
         string mapFile = $@"{WorkDir}\Resources\exploration-0.map";
+        Random random = new Random();
+        ILogger logger = new ConsoleLogger();
         Coordinate landingSpot = new Coordinate(6, 6);
         ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
-        IMapLoader mapLoader = new MapLoader.MapLoader();
-        IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
-        Random random = new Random();
         
-
+        IMapLoader mapLoader = new MapLoader.MapLoader();
+        IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
+        IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer();
+        
+        
+        IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
+        
         
         
         Configuration.Configuration configuration = new Configuration.Configuration(
             mapFile: mapFile,
             startCoordinate: landingSpot,
             symbols: symbolsToMonitor,
-            timeOut: 1000);
+            timeOut: 10);
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
-
-
-        PlaceRover placeRover = new PlaceRover(configuration, configurationValidator, mapLoader, coordinateCalculator);
-        var rover = placeRover.PlaceRoverOnMap("Rover-01");
         
-        
-        var contextBuilder = new ContextBuilder(configuration,rover,mapLoader,configurationValidator);
-
-        ILogger logger = new ConsoleLogger();
-        IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
-        IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer();
         var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger);
-        
+        var placeRover = new PlaceRover(configuration, configurationValidator, mapLoader, coordinateCalculator);
+        var rover = placeRover.PlaceRoverOnMap("Rover-01");
+        var contextBuilder = new ContextBuilder(configuration, rover, mapLoader, configurationValidator);
         ExplorationSimulator explorationSimulator = new ExplorationSimulator(contextBuilder, simulationStep);
+        
+        /*---------------------------SIMULATE-----------------------------------*/
         explorationSimulator.Simulate();
     
 

@@ -7,7 +7,6 @@ public class MapLoader : IMapLoader
     public Map Load(string mapFile)
     {
         string[] map = File.ReadAllLines(mapFile);
-        Console.WriteLine(map);
         int rowCount =map.Length;
         int columnCount = map[0].Length;
         var representationArray = StringToMultidimensionArray(map,rowCount,columnCount);

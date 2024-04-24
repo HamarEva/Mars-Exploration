@@ -18,16 +18,14 @@ public class SimulationStep
 
     public void OneStep(SimulationContext simulationContext)
     {
-        // Move, Scan and step increment:
         _movementRoutines.Move(simulationContext);
-        // Analysis
         _outcomeAnalyzer.Outcome(simulationContext);
-        // Log majd loggerrel kéne:
-        Console.WriteLine(
-            $"STEP {simulationContext.Steps}; EVENT position; UNIT {simulationContext.Rover.ID}; POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
+        
+        _logger.LogPosition(simulationContext.Steps,simulationContext.Rover.ID,simulationContext.Rover.Position.X,simulationContext.Rover.Position.Y,"position");
+        
         if (simulationContext.ExplorationOutcome != ExplorationOutcome.Null)
         {
-            Console.WriteLine($"STEP {simulationContext.Steps}; EVENT outcome; OUTCOME {simulationContext.ExplorationOutcome}");
+            _logger.LogOutcome(simulationContext.Steps,"outcome",simulationContext.ExplorationOutcome.ToString());
             _movementRoutines.TeleportBackToShip(simulationContext);
             Console.WriteLine($"Rover teleported back to the Spaceship. POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
         }

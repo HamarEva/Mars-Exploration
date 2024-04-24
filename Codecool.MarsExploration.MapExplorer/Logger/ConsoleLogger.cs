@@ -2,16 +2,28 @@ namespace Codecool.MarsExploration.MapExplorer.Logger;
 
 public class ConsoleLogger : ILogger
 {
-    public void Log(string message)
+    public void LogPosition(int step, string roverID, int coordinateX, int coordinateY, string eventType)
     {
-        LogMessage(message, "INFO");
+        LogMessage(step, roverID, coordinateX, coordinateY, eventType);
     }
 
-    private void LogMessage(string message, string type)
+    public void LogOutcome(int step, string eventType, string outcome)
     {
-        var entry = $"[{DateTime.Now}] {type}: {message}";
-        Console.WriteLine(entry);
+        LogMessage(step, eventType,outcome);
     }
 
-  
+    private void LogMessage(int step, string roverID, int coordinateX, int coordinateY, string eventType)
+    {
+      
+        Console.WriteLine($"STEP {step}; EVENT {eventType}; UNIT {roverID}; POSITION [{coordinateX},{coordinateY}]");
+    }
+    private void LogMessage(int step, string eventType, string outcome)
+    {
+            Console.WriteLine($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
+            
+    }
+
+
+   
 }
+

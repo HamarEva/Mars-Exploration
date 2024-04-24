@@ -4,16 +4,33 @@ namespace Codecool.MarsExploration.MapExplorer.Logger;
 
 public class FileLogger : ILogger
 {
-    public void Log(string message)
+  
+    public void LogPosition(int step, string roverID, int coordinateX, int coordinateY, string eventType)
     {
-        WriteFile(message,"INFO");
+        WriteFile( step,  roverID,  coordinateX,  coordinateY,  eventType);
     }
 
-    private void WriteFile(string message, string type)
+    public void LogOutcome(int step, string eventType, string outcome)
+    {
+        WriteFile(step,eventType,outcome);
+    }
+
+    private void WriteFile(int step, string roverID, int coordinateX, int coordinateY, string eventType)
     {
         var dir = AppDomain.CurrentDomain.BaseDirectory;
         var path = $"{dir}\\Resources\\FileWriter.txt";
-        var text = $"{type}: {message}";
-        File.WriteAllText(path,message);
+        string text = ($"STEP {step}; EVENT {eventType}; UNIT {roverID}; POSITION [{coordinateX},{coordinateY}]");
+        
+        File.WriteAllText(path,text);
     }
+    
+    private void WriteFile(int step, string eventType, string outcome)
+    {
+        var dir = AppDomain.CurrentDomain.BaseDirectory;
+        var path = $"{dir}\\Resources\\FileWriter.txt";
+        string text = ($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
+        File.WriteAllText(path,text);
+    }
+
+  
 }
