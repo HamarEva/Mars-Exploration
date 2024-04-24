@@ -16,10 +16,12 @@ namespace Codecool.MarsExploration.MapExplorer.Simulation
     {
 
         private readonly ContextBuilder _contextBuilder;
+        private readonly SimulationStep _simulationStep;
 
-        public ExplorationSimulator(ContextBuilder contextBuilder)
+        public ExplorationSimulator(ContextBuilder contextBuilder, SimulationStep simulationStep)
         {
             _contextBuilder = contextBuilder;
+            _simulationStep = simulationStep;
         }
 
         public SimulationContext GetContext()
@@ -30,7 +32,11 @@ namespace Codecool.MarsExploration.MapExplorer.Simulation
 
         public void Simulate()
         {
-            
+            var simulationContext = GetContext();
+            do
+            {
+                _simulationStep.OneStep(simulationContext);
+            } while (simulationContext.ExplorationOutcome == ExplorationOutcome.Null);
         }
     }
 }

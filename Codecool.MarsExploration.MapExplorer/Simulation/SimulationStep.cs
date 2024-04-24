@@ -24,10 +24,12 @@ public class SimulationStep
         _outcomeAnalyzer.Outcome(simulationContext);
         // Log majd loggerrel kéne:
         Console.WriteLine(
-            $"STEP {simulationContext.Steps}; EVENT position; UNIT rover-{simulationContext.Rover.ID}; POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
+            $"STEP {simulationContext.Steps}; EVENT position; UNIT {simulationContext.Rover.ID}; POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
         if (simulationContext.ExplorationOutcome != ExplorationOutcome.Null)
         {
             Console.WriteLine($"STEP {simulationContext.Steps}; EVENT outcome; OUTCOME {simulationContext.ExplorationOutcome}");
+            _movementRoutines.TeleportBackToShip(simulationContext);
+            Console.WriteLine($"Rover teleported back to the Spaceship. POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
         }
     }
     

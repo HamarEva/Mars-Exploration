@@ -1,11 +1,12 @@
 ﻿using Codecool.MarsExploration.MapExplorer.Configuration;
+using Codecool.MarsExploration.MapExplorer.Exploration;
 using Codecool.MarsExploration.MapExplorer.Logger;
 using Codecool.MarsExploration.MapExplorer.MapLoader;
 using Codecool.MarsExploration.MapExplorer.MarsRover;
 using Codecool.MarsExploration.MapExplorer.Simulation;
 using Codecool.MarsExploration.MapGenerator.Calculators.Model;
 using Codecool.MarsExploration.MapGenerator.Calculators.Service;
-
+using Codecool.MarsExploration.MapExplorer.Logger;
 namespace Codecool.MarsExploration.MapExplorer;
 
 class Program
@@ -19,6 +20,7 @@ class Program
         ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         IMapLoader mapLoader = new MapLoader.MapLoader();
         IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
+        Random random = new Random();
         
 
         
@@ -37,11 +39,14 @@ class Program
         
         
         var contextBuilder = new ContextBuilder(configuration,rover,mapLoader,configurationValidator);
-        
-        
-        
-        ExplorationSimulator explorationSimulator = new ExplorationSimulator(contextBuilder);
 
+        ILogger logger = new ConsoleLogger();
+        IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
+        IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer();
+        var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger);
+        
+        ExplorationSimulator explorationSimulator = new ExplorationSimulator(contextBuilder, simulationStep);
+        explorationSimulator.Simulate();
     
 
 

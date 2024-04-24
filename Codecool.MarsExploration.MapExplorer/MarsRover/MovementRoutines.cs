@@ -6,17 +6,19 @@ namespace Codecool.MarsExploration.MapExplorer.MarsRover;
 
 public class MovementRoutines : IMovementRoutines
 {
-    
     private readonly ICoordinateCalculator _coordinateCalculator; 
+    private readonly Random _random;
 
-
-    public MovementRoutines(ICoordinateCalculator coordinateCalculator)
+    public MovementRoutines(ICoordinateCalculator coordinateCalculator, Random random)
     {
         _coordinateCalculator = coordinateCalculator;
+        _random = random;
     }
     public void Move(SimulationContext simulationContext)
     {
-        Coordinate nextCoordinate = GetPossibleNextCoordinates(simulationContext)[0];
+        var nextCoordinates = GetPossibleNextCoordinates(simulationContext);
+        int index = _random.Next(nextCoordinates.Count);
+        Coordinate nextCoordinate = nextCoordinates[index];
         simulationContext.Rover.Position = nextCoordinate;
         simulationContext.Rover.MovePath.Add(nextCoordinate);
         AddCoordinatesInSightToEncountered(nextCoordinate, simulationContext);
