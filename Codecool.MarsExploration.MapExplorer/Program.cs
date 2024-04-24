@@ -34,7 +34,7 @@ class Program
             mapFile: mapFile,
             startCoordinate: landingSpot,
             symbols: symbolsToMonitor,
-            timeOut: 10);
+            timeOut: 100);
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
         

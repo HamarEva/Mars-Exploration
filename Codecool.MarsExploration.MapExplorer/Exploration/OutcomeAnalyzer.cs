@@ -28,14 +28,9 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
 
     private bool Success(SimulationContext simulationContext)
     {
-        if (simulationContext.Rover.Encountered["*"].Count >= 4 && simulationContext.Rover.Encountered["%"].Count >= 3)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return simulationContext.Rover.Encountered["*"].Count >= 4 &&
+               simulationContext.Rover.Encountered["%"].Count >= 3;
+
     }
 
     private bool LackOfResources(SimulationContext simulationContext)
