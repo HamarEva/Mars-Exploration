@@ -20,7 +20,7 @@ public class PlaceRover
         _coordinateCalculator = coordinateCalculator;
     }
 
-    public Rover PlaceRoverOnMap()
+    public Rover PlaceRoverOnMap(string ID)
     {
         var map = _mapLoader.Load(_configuration.mapFile);
         var startCoordinate = _configuration.startCoordinate;
@@ -36,6 +36,6 @@ public class PlaceRover
             }
         }
 
-        return new Rover("rover-1,", emptyAdjacentCoordinates[0], roverSight, new List<Coordinate>(){emptyAdjacentCoordinates[0]});
+        return new Rover(ID, emptyAdjacentCoordinates[0], roverSight);
     }
 }

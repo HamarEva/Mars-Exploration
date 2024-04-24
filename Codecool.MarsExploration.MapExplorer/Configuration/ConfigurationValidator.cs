@@ -10,9 +10,10 @@ public class ConfigurationValidator : IConfigurationValidator
     private readonly IMapLoader _mapLoader;
     private readonly ICoordinateCalculator _coordinateCalculator;
 
-    public ConfigurationValidator(IMapLoader mapLoader)
+    public ConfigurationValidator(IMapLoader mapLoader, ICoordinateCalculator coordinateCalculator)
     {
         _mapLoader = mapLoader;
+        _coordinateCalculator = coordinateCalculator;
     }
     //public record Configuration(string mapFile, Coordinate startCoordinate, IEnumerable<string> symbols, int timeOut);
     public bool Validate(Configuration configuration)
@@ -29,7 +30,7 @@ public class ConfigurationValidator : IConfigurationValidator
     {
         var map = _mapLoader.Load(configuration.mapFile).Representation;
 
-        return map[configuration.startCoordinate.X, configuration.startCoordinate.Y] == "";
+        return map[configuration.startCoordinate.X, configuration.startCoordinate.Y] == " ";
     }
 
     private bool IsThereEmptyAdjacent(Configuration configuration)
@@ -39,7 +40,7 @@ public class ConfigurationValidator : IConfigurationValidator
 
         foreach (var coordinate in coordinates)
         {
-            if (map.Representation[coordinate.X, coordinate.Y] == "")
+            if (map.Representation[coordinate.X, coordinate.Y] == " ")
             {
                 return true;
             }

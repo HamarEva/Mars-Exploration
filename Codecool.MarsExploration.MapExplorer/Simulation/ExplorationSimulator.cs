@@ -1,18 +1,35 @@
-namespace Codecool.MarsExploration.MapExplorer.Simulation;
+using System;
+using System.Collections.Generic;
 using Codecool.MarsExploration.MapExplorer.Configuration;
+using Codecool.MarsExploration.MapExplorer.Exploration;
+using Codecool.MarsExploration.MapExplorer.MapLoader;
+using Codecool.MarsExploration.MapExplorer.MarsRover;
+using Codecool.MarsExploration.MapGenerator.Calculators.Model;
+using Codecool.MarsExploration.MapGenerator.Calculators.Service;
+using Codecool.MarsExploration.MapGenerator.MapElements.Model;
 
-public class ExplorationSimulator
+namespace Codecool.MarsExploration.MapExplorer.Simulation
 {
-    //public record Configuration(string mapFile, Coordinate startCoordinate, IEnumerable<string> symbols, int timeOut);
-    private readonly Configuration _configuration;
-    private readonly IConfigurationValidator _configurationValidator;
-    private readonly SimulationContext _simulationContext;
-
-    public ExplorationSimulator(Configuration configuration, IConfigurationValidator configurationValidator, SimulationContext simulationContext)
+  
+    public class ExplorationSimulator
     {
-        
+
+        private readonly ContextBuilder _contextBuilder;
+
+        public ExplorationSimulator(ContextBuilder contextBuilder)
+        {
+            _contextBuilder = contextBuilder;
+        }
+
+        public SimulationContext GetContext()
+
+        {
+            return _contextBuilder.CreateContext();
+        }
+
+        public void Simulate()
+        {
+            
+        }
     }
-
-
-
 }
