@@ -28,6 +28,12 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
 
     private bool Success(SimulationContext simulationContext)
     {
+        if (!simulationContext.Rover.Encountered.ContainsKey("*") ||
+            !simulationContext.Rover.Encountered.ContainsKey("%"))
+        {
+            return false;
+        }
+        
         return simulationContext.Rover.Encountered["*"].Count >= 4 &&
                simulationContext.Rover.Encountered["%"].Count >= 3;
 
