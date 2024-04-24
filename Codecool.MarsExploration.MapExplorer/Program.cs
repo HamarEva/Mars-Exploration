@@ -7,6 +7,8 @@ using Codecool.MarsExploration.MapExplorer.Simulation;
 using Codecool.MarsExploration.MapGenerator.Calculators.Model;
 using Codecool.MarsExploration.MapGenerator.Calculators.Service;
 using Codecool.MarsExploration.MapExplorer.Logger;
+using Codecool.MarsExploration.MapExplorer.Repository;
+
 namespace Codecool.MarsExploration.MapExplorer;
 
 class Program
@@ -15,6 +17,10 @@ class Program
 
     public static void Main(string[] args)
     {
+        string workDir = AppDomain.CurrentDomain.BaseDirectory;
+        var dbFile = $"{workDir}\\Resources\\MarsExploration.db";
+        ISimulationRepository simulationRepository = new SimulationRepository(dbFile);
+        
         string mapFile = $@"{WorkDir}\Resources\exploration-0.map";
         Random random = new Random();
         ILogger logger = new ConsoleLogger();
@@ -38,7 +44,7 @@ class Program
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
         
-        var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger);
+        var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger, simulationRepository);
         var placeRover = new PlaceRover(configuration, configurationValidator, mapLoader, coordinateCalculator);
         var rover = placeRover.PlaceRoverOnMap("Rover-01");
         var contextBuilder = new ContextBuilder(configuration, rover, mapLoader, configurationValidator);
@@ -46,8 +52,8 @@ class Program
         
         /*---------------------------SIMULATE-----------------------------------*/
         explorationSimulator.Simulate();
-    
-
+   
+        
 
 
     }

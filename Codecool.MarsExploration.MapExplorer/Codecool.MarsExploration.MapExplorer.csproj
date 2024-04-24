@@ -24,9 +24,14 @@
       <Content Include="Resources\exploration-2.map">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Resources\MarsExploration.db" />
+      <Content Include="Resources\MarsExploration.db">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.0-preview.3.24172.4" />
       <PackageReference Include="Moq" Version="4.20.70" />
     </ItemGroup>
 
