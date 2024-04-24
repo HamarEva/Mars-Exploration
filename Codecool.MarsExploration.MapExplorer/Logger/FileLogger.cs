@@ -1,19 +1,23 @@
 using System.Threading.Channels;
+using Codecool.MarsExploration.MapExplorer.Simulation;
 
 namespace Codecool.MarsExploration.MapExplorer.Logger;
 
 public class FileLogger : ILogger
 {
   
-    public void LogPosition(int step, string roverID, int coordinateX, int coordinateY, string eventType)
+    public void LogPosition(SimulationContext simulationContext, string eventType)
     {
-        WriteFile( step,  roverID,  coordinateX,  coordinateY,  eventType);
+        WriteFile( simulationContext.Steps,  simulationContext.Rover.ID,  simulationContext.Rover.Position.X,  simulationContext.Rover.Position.Y,  eventType);
     }
 
-    public void LogOutcome(int step, string eventType, string outcome)
+    public void LogOutcome(SimulationContext simulationContext, string eventType)
     {
-        WriteFile(step,eventType,outcome);
+        WriteFile(simulationContext.Steps,eventType,simulationContext.ExplorationOutcome.ToString());
     }
+
+    
+
 
     private void WriteFile(int step, string roverID, int coordinateX, int coordinateY, string eventType)
     {

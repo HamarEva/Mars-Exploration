@@ -21,11 +21,11 @@ public class SimulationStep
         _movementRoutines.Move(simulationContext);
         _outcomeAnalyzer.Outcome(simulationContext);
         
-        _logger.LogPosition(simulationContext.Steps,simulationContext.Rover.ID,simulationContext.Rover.Position.X,simulationContext.Rover.Position.Y,"position");
+        _logger.LogPosition(simulationContext,"position");
         
         if (simulationContext.ExplorationOutcome != ExplorationOutcome.Null)
         {
-            _logger.LogOutcome(simulationContext.Steps,"outcome",simulationContext.ExplorationOutcome.ToString());
+            _logger.LogOutcome(simulationContext,"outcome");
             _movementRoutines.TeleportBackToShip(simulationContext);
             Console.WriteLine($"Rover teleported back to the Spaceship. POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
         }

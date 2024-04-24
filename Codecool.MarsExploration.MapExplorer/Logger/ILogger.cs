@@ -1,7 +1,10 @@
-﻿namespace Codecool.MarsExploration.MapExplorer.Logger;
+﻿using Codecool.MarsExploration.MapExplorer.Simulation;
+
+namespace Codecool.MarsExploration.MapExplorer.Logger;
 
 public interface ILogger
 {
-    void LogPosition(int step, string roverID, int coordinateX, int coordinateY, string eventType);
-    void LogOutcome(int step, string eventType, string outcome);
+    void LogPosition(SimulationContext simulationContext, string eventType);
+    void LogOutcome(SimulationContext simulationContext, string eventType);
+    
 }
