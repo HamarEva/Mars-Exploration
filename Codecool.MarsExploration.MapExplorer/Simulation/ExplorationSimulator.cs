@@ -7,6 +7,7 @@ using Codecool.MarsExploration.MapExplorer.MarsRover;
 using Codecool.MarsExploration.MapGenerator.Calculators.Model;
 using Codecool.MarsExploration.MapGenerator.Calculators.Service;
 using Codecool.MarsExploration.MapGenerator.MapElements.Model;
+using ContextBuilder = Codecool.MarsExploration.MapExplorer.Simulation.ContextBuilder;
 
 namespace Codecool.MarsExploration.MapExplorer.Simulation
 {

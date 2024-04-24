@@ -4,7 +4,7 @@ namespace Codecool.MarsExploration.MapExplorer.MarsRover;
 
 public class Rover
 {
-    private string ID { get; set; }
+    public string ID { get; set; }
     public Coordinate Position { get; set; }
     public int Sight { get; set; }
 

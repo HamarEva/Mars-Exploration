@@ -8,40 +8,39 @@ public class MovementRoutines : IMovementRoutines
 {
     
     private readonly ICoordinateCalculator _coordinateCalculator; 
-    private readonly SimulationContext _simulationContext;
 
-    public MovementRoutines(ICoordinateCalculator coordinateCalculator, SimulationContext simulationContext)
+
+    public MovementRoutines(ICoordinateCalculator coordinateCalculator)
     {
         _coordinateCalculator = coordinateCalculator;
-        _simulationContext = simulationContext;
     }
-    public void Move()
+    public void Move(SimulationContext simulationContext)
     {
-        Coordinate nextCoordinate = GetPossibleNextCoordinates()[0];
-        _simulationContext.Rover.Position = nextCoordinate;
-        _simulationContext.Rover.MovePath.Add(nextCoordinate);
-        AddCoordinatesInSightToEncountered(nextCoordinate);
-        _simulationContext.Steps++;
+        Coordinate nextCoordinate = GetPossibleNextCoordinates(simulationContext)[0];
+        simulationContext.Rover.Position = nextCoordinate;
+        simulationContext.Rover.MovePath.Add(nextCoordinate);
+        AddCoordinatesInSightToEncountered(nextCoordinate, simulationContext);
+        simulationContext.Steps++;
     }
     
-    public void TeleportBackToShip()
+    public void TeleportBackToShip(SimulationContext simulationContext)
     {
-        Coordinate returnCoordinate = _simulationContext.SpaceShipLocation;
-        _simulationContext.Rover.Position = returnCoordinate;
+        Coordinate returnCoordinate = simulationContext.SpaceShipLocation;
+        simulationContext.Rover.Position = returnCoordinate;
     }
 
-    private List<Coordinate> GetPossibleNextCoordinates()
+    private List<Coordinate> GetPossibleNextCoordinates(SimulationContext simulationContext)
     {
         List<Coordinate> possibleNextCoordinates = new List<Coordinate>();
         List<Coordinate> nextCoordinates = new List<Coordinate>();
         
         IEnumerable<Coordinate> adjacentCoordinates =
-            _coordinateCalculator.GetAdjacentCoordinates(_simulationContext.Rover.Position, _simulationContext.Map.Representation.GetLength(0));
+            _coordinateCalculator.GetAdjacentCoordinates(simulationContext.Rover.Position, simulationContext.Map.Representation.GetLength(0));
         
         foreach (var coordinate in adjacentCoordinates)
         {
-            if (_simulationContext.Map.Representation[coordinate.X, coordinate.Y] == " "
-                && _simulationContext.SpaceShipLocation != coordinate)
+            if (simulationContext.Map.Representation[coordinate.X, coordinate.Y] == " "
+                && simulationContext.SpaceShipLocation != coordinate)
             {
                 possibleNextCoordinates.Add(coordinate);
             }
@@ -49,7 +48,7 @@ public class MovementRoutines : IMovementRoutines
 
         foreach (var coordinate in possibleNextCoordinates)
         {
-            if (!_simulationContext.Rover.MovePath.Contains(coordinate))
+            if (!simulationContext.Rover.MovePath.Contains(coordinate))
             {
                 nextCoordinates.Add(coordinate);
             }
@@ -62,20 +61,20 @@ public class MovementRoutines : IMovementRoutines
         return possibleNextCoordinates;
     }
 
-    private void AddCoordinatesInSightToEncountered(Coordinate nextCoordinate)
+    private void AddCoordinatesInSightToEncountered(Coordinate nextCoordinate, SimulationContext simulationContext)
     {
         var coordinatesInSight =
-            _coordinateCalculator.GetCoordinatesInSight(nextCoordinate, _simulationContext.Map.Dimension, _simulationContext.Rover.Sight);
+            _coordinateCalculator.GetCoordinatesInSight(nextCoordinate, simulationContext.Map.Dimension, simulationContext.Rover.Sight);
         foreach (var coordinate in coordinatesInSight)
         {
-            string symbol = _simulationContext.Map.GetByCoordinate(coordinate);
-            if (!_simulationContext.Rover.Encountered.ContainsKey(symbol))
+            string symbol = simulationContext.Map.GetByCoordinate(coordinate);
+            if (!simulationContext.Rover.Encountered.ContainsKey(symbol))
             {
-                _simulationContext.Rover.Encountered[symbol] = new List<Coordinate>();
+                simulationContext.Rover.Encountered[symbol] = new List<Coordinate>();
             }
-            if (!_simulationContext.Rover.Encountered[symbol].Contains(coordinate))
+            if (!simulationContext.Rover.Encountered[symbol].Contains(coordinate))
             {
-                _simulationContext.Rover.Encountered[symbol].Add(coordinate);
+                simulationContext.Rover.Encountered[symbol].Add(coordinate);
             }
         }
         

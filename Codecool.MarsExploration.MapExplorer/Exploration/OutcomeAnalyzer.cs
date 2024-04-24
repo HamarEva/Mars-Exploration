@@ -4,46 +4,40 @@ namespace Codecool.MarsExploration.MapExplorer.Exploration;
 
 public class OutcomeAnalyzer : IOutcomeAnalyzer
 {
-    private readonly SimulationContext _simulationContext;
 
-    public OutcomeAnalyzer(SimulationContext simulationContext)
+    public void Outcome(SimulationContext simulationContext)
     {
-        _simulationContext = simulationContext;
-    }
-    
-    public void Outcome()
-    {
-        if (Timeout())
+        if (Timeout(simulationContext))
         {
-            _simulationContext.ExplorationOutcome = ExplorationOutcome.Timeout;
+            simulationContext.ExplorationOutcome = ExplorationOutcome.Timeout;
         }
-        if (Success())
+        if (Success(simulationContext))
         {
-            _simulationContext.ExplorationOutcome = ExplorationOutcome.Colonizable;
+            simulationContext.ExplorationOutcome = ExplorationOutcome.Colonizable;
         }
-        if (LackOfResources())
+        if (LackOfResources(simulationContext))
         {
-            _simulationContext.ExplorationOutcome = ExplorationOutcome.Error;
+            simulationContext.ExplorationOutcome = ExplorationOutcome.Error;
         }
     }
     
-    private bool Timeout()
+    private bool Timeout(SimulationContext simulationContext)
     {
-        return _simulationContext.Steps == _simulationContext.MaxSteps;
+        return simulationContext.Steps == simulationContext.MaxSteps;
     }
 
-    private bool Success()
+    private bool Success(SimulationContext simulationContext)
     {
-        return _simulationContext.Rover.Encountered["*"].Count >= 4 &&
-               _simulationContext.Rover.Encountered["%"].Count >= 3;
+        return simulationContext.Rover.Encountered["*"].Count >= 4 &&
+               simulationContext.Rover.Encountered["%"].Count >= 3;
     }
 
-    private bool LackOfResources()
+    private bool LackOfResources(SimulationContext simulationContext)
     {
-        int mapSize = _simulationContext.Map.Representation.Length;
+        int mapSize = simulationContext.Map.Representation.Length;
         
         int encountered = 0;
-        foreach (var keyValuePair in _simulationContext.Rover.Encountered)
+        foreach (var keyValuePair in simulationContext.Rover.Encountered)
         {
             encountered += keyValuePair.Value.Count;
         }
