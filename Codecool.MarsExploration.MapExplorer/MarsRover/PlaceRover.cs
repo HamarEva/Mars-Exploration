@@ -10,14 +10,15 @@ public class PlaceRover
     private readonly IConfigurationValidator _configurationValidator;
     private readonly IMapLoader _mapLoader;
     private ICoordinateCalculator _coordinateCalculator;
-    private const int roverSight = 3 ;
+    private readonly int _roverSight;
 
-    public PlaceRover(Configuration configuration, IConfigurationValidator configurationValidator, IMapLoader mapLoader, ICoordinateCalculator coordinateCalculator)
+    public PlaceRover(Configuration configuration, IConfigurationValidator configurationValidator, IMapLoader mapLoader, ICoordinateCalculator coordinateCalculator,int roverSight)
     {
         _configuration = configuration;
         _configurationValidator = configurationValidator;
         _mapLoader = mapLoader;
         _coordinateCalculator = coordinateCalculator;
+        _roverSight = roverSight;
     }
 
     public Rover PlaceRoverOnMap(string ID)
@@ -36,6 +37,6 @@ public class PlaceRover
             }
         }
 
-        return new Rover(ID, emptyAdjacentCoordinates[0], roverSight, new List<Coordinate>{emptyAdjacentCoordinates[0]});
+        return new Rover(ID, emptyAdjacentCoordinates[0], _roverSight, new List<Coordinate>{emptyAdjacentCoordinates[0]});
     }
 }
