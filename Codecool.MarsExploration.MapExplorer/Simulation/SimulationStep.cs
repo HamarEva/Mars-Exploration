@@ -47,6 +47,8 @@ public class SimulationStep
             }
             _simulationRepo.Add(DateTime.Now.ToString(), simulationContext.Steps, resourcesCount, simulationContext.ExplorationOutcome.ToString());
             Console.WriteLine("Simulation data added to MarsExploration database.");
+            Console.WriteLine("Press any button to exit");
+            Console.ReadKey();
         }
     }
     

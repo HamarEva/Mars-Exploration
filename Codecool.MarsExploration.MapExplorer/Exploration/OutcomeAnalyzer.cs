@@ -4,6 +4,12 @@ namespace Codecool.MarsExploration.MapExplorer.Exploration;
 
 public class OutcomeAnalyzer : IOutcomeAnalyzer
 {
+    private readonly Configuration.Configuration _configuration;
+
+    public OutcomeAnalyzer(Configuration.Configuration configuration)
+    {
+        _configuration = configuration;
+    }
 
     public void Outcome(SimulationContext simulationContext)
     {

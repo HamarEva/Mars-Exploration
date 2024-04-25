@@ -59,6 +59,7 @@ public class ConfigurationValidator : IConfigurationValidator
     private bool IsTimeOutGreaterThanZero(Configuration configuration)
     {
         return configuration.timeOut > 0;
+
     }
 
     private bool AreSymblosValid(Configuration configuration)
