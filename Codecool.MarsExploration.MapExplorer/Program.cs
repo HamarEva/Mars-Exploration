@@ -14,41 +14,58 @@ namespace Codecool.MarsExploration.MapExplorer;
 class Program
 {
     private static readonly string WorkDir = AppDomain.CurrentDomain.BaseDirectory;
+    static int selectedOptionIndex = 0;
 
     public static void Main(string[] args)
     {
+        
         string workDir = AppDomain.CurrentDomain.BaseDirectory;
         var dbFile = $"{workDir}\\Resources\\MarsExploration.db";
         
+        
         Console.WriteLine("Explore the Mars");
-
-        Console.WriteLine("Select a map (0-2):");
-        string map = Console.ReadLine();
+        string[] maps = { "exploration-0.map", "exploration-1.map", "exploration-2.map", "exit" };
+        string[] rovers = { "Rover-01", "Rover-02", "WALL-E" };
+       
+        
+        Console.CursorVisible = false;
+        string map = OptionMenu(maps);
         Console.WriteLine("Select the landing coordinates:");
-        Console.WriteLine("X:");
+        Console.WriteLine($"X:");
         int x = int.Parse(Console.ReadLine());
-        Console.WriteLine("Y:");
+        Console.WriteLine( $"Y:");
         int y = int.Parse(Console.ReadLine());
-        Console.WriteLine("You have to configure");
+        Console.Clear();
+        Console.WriteLine("You have to configure the rover");
+        string roverUnit = OptionMenu(rovers);
+        Console.Clear();
         Console.WriteLine("Sight that the rover sees:");
         int roverSight = int.Parse(Console.ReadLine());
+        Console.Clear();
         Console.WriteLine("Max steps the rover can make:");
         int timeOut = int.Parse(Console.ReadLine());
+        Console.Clear();
+
+        Console.WriteLine($"Selected map: {map}");
+        Console.WriteLine($"Selected landing coordinates: [{x},{y}]");
+        Console.WriteLine($"Selected unit: {roverUnit}");
+        Console.WriteLine($"Selected sight: {roverSight}");
+        Console.WriteLine($"Selected timeout: {timeOut}");
+        Console.WriteLine("Press enter to start the simulation");
+        Console.ReadKey();
+        Console.Clear();
         
         
         ISimulationRepository simulationRepository = new SimulationRepository(dbFile);
         
-        string mapFile = $@"{WorkDir}\Resources\exploration-{map}.map";
+        string mapFile = $@"{WorkDir}\Resources\{map}";
         Random random = new Random();
         ILogger logger = new ConsoleLogger();
         Coordinate landingSpot = new Coordinate(x, y); 
-        ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         
+        ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         IMapLoader mapLoader = new MapLoader.MapLoader();
         IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
-        IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer();
-        
-        
         IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
       
         
@@ -59,20 +76,59 @@ class Program
             timeOut: timeOut);
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
+        IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer(configuration);
         
         var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger, simulationRepository);
         var placeRover = new PlaceRover(configuration, configurationValidator, mapLoader, coordinateCalculator,roverSight);
-        var rover = placeRover.PlaceRoverOnMap("Rover-01");
+        var rover = placeRover.PlaceRoverOnMap(roverUnit);
         var contextBuilder = new ContextBuilder(configuration, rover, mapLoader, configurationValidator);
         ExplorationSimulator explorationSimulator = new ExplorationSimulator(contextBuilder, simulationStep);
         
         /*---------------------------SIMULATE-----------------------------------*/
-        Console.WriteLine(rover.Position);
         explorationSimulator.Simulate();
-   
-        
+    }
+    
+    static void PrintMenu(string[] options)
+    {
+        for (int i = 0; i < options.Length; i++)
+        {
+            if (i == selectedOptionIndex)
+            {
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.BackgroundColor = ConsoleColor.Yellow;
+            }
 
+            Console.WriteLine(options[i]);
 
+            Console.ResetColor();
+        }
+    }
+
+    static string OptionMenu(string[] options)
+    {
+        ConsoleKeyInfo key;
+        do
+        {
+            PrintMenu(options);
+            key = Console.ReadKey(true);
+
+            switch (key.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    selectedOptionIndex = (selectedOptionIndex == 0) ? options.Length - 1 : selectedOptionIndex - 1;
+                    Console.Clear();
+                    break;
+                case ConsoleKey.DownArrow:
+                    selectedOptionIndex = (selectedOptionIndex == options.Length - 1) ? 0 : selectedOptionIndex + 1;
+                    Console.Clear();
+                    break;
+                case ConsoleKey.Enter:
+                    Console.Clear();
+                    break;
+            }
+        } while (key.Key != ConsoleKey.Enter);
+
+        return options[selectedOptionIndex];
     }
 }
 

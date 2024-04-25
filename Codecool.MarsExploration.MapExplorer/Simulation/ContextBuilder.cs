@@ -40,9 +40,8 @@ public class ContextBuilder
         if (_configurationValidator.Validate(_configuration))
         {
             var map = _mapLoader.Load(_configuration.mapFile);
-            return new SimulationContext(_configuration.timeOut, _rover, _configuration.startCoordinate, map, _configuration.symbols);
+            return new SimulationContext(_configuration.timeOut, _rover, _configuration.startCoordinate, map, _configuration.symbols); ;
         }
-
         return null;
     }
 

@@ -21,7 +21,21 @@ public class ConsoleLogger : ILogger
     }
     private void LogMessage(int step, string eventType, string outcome)
     {
-            Console.WriteLine($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
+            
+
+            if (outcome.ToLower() == "colonizable")
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
+                Console.ResetColor();
+            }
+            else if (outcome.ToLower() == "timeout" || outcome.ToLower() == "error")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
+                Console.ResetColor();
+            }
+            
             
     }
 
