@@ -30,6 +30,38 @@ public class MovementRoutines : IMovementRoutines
         Coordinate returnCoordinate = simulationContext.SpaceShipLocation;
         simulationContext.Rover.Position = returnCoordinate;
     }
+    
+    public int LeastStepsBackToShip(SimulationContext simulationContext)
+    {
+        Coordinate returnCoordinate = simulationContext.SpaceShipLocation;
+        Coordinate currentCoordinate = simulationContext.Rover.Position;
+
+        List<Coordinate> currentFields = new List<Coordinate> { currentCoordinate };
+        List<Coordinate> emptyFields = simulationContext.Rover.Encountered[" "].ToList();
+        emptyFields.Add(returnCoordinate);
+        Dictionary<int, IEnumerable<Coordinate>> emptyFieldsBySteps = new Dictionary<int, IEnumerable<Coordinate>>();
+
+        for (int i = 1; i < simulationContext.MaxSteps; i++)
+        {
+            List<Coordinate> nextFields = _coordinateCalculator
+                .GetAdjacentCoordinates(currentFields, simulationContext.Map.Dimension)
+                .Where(c => emptyFields.Contains(c)).ToList();
+
+            emptyFieldsBySteps.Add(i, nextFields);
+            foreach (var coordinate in nextFields.ToList())
+            {
+                emptyFields.Remove(coordinate);
+            }
+
+            currentFields = nextFields;
+
+            if (nextFields.Contains(returnCoordinate))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     private List<Coordinate> GetPossibleNextCoordinates(SimulationContext simulationContext)
     {

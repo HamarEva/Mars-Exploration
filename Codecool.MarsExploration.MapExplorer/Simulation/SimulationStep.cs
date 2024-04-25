@@ -30,6 +30,8 @@ public class SimulationStep
         if (simulationContext.ExplorationOutcome != ExplorationOutcome.Null)
         {
             _logger.LogOutcome(simulationContext,"outcome");
+            
+            Console.WriteLine($"Least steps back to Spaceship: {_movementRoutines.LeastStepsBackToShip(simulationContext)}");
             _movementRoutines.TeleportBackToShip(simulationContext);
             Console.WriteLine($"Rover teleported back to the Spaceship. POSITION [{simulationContext.Rover.Position.X},{simulationContext.Rover.Position.Y}]");
 
