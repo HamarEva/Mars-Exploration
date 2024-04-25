@@ -18,56 +18,62 @@ class Program
 
     public static void Main(string[] args)
     {
-        
+        ILogger logger = new ConsoleLogger();
         string workDir = AppDomain.CurrentDomain.BaseDirectory;
         var dbFile = $"{workDir}\\Resources\\MarsExploration.db";
+
         
         
-        Console.WriteLine("Explore the Mars");
+        
+        logger.LogMessage("Explore the Mars");
         string[] maps = { "exploration-0.map", "exploration-1.map", "exploration-2.map", "exit" };
         string[] rovers = { "Rover-01", "Rover-02", "WALL-E" };
        
         
         Console.CursorVisible = false;
         string map = OptionMenu(maps);
-        Console.WriteLine("Select the landing coordinates:");
-        Console.WriteLine($"X:");
+        logger.LogMessage("Select the landing coordinates:");
+        logger.LogMessage($"X:");
         int x = int.Parse(Console.ReadLine());
-        Console.WriteLine( $"Y:");
+        logger.LogMessage( $"Y:");
         int y = int.Parse(Console.ReadLine());
         Console.Clear();
-        Console.WriteLine("You have to configure the rover");
+        logger.LogMessage("You have to configure the rover");
         string roverUnit = OptionMenu(rovers);
         Console.Clear();
-        Console.WriteLine("Sight that the rover sees:");
+        logger.LogMessage("Sight that the rover sees:");
         int roverSight = int.Parse(Console.ReadLine());
         Console.Clear();
-        Console.WriteLine("Max steps the rover can make:");
+        logger.LogMessage("Max steps the rover can make:");
         int timeOut = int.Parse(Console.ReadLine());
         Console.Clear();
+        logger.LogMessage("Symbols to monitor(separated by comma):");
+        string symbols = Console.ReadLine();
+        IEnumerable<string> symbolsToMonitor = symbols.Split(",").ToList();
 
-        Console.WriteLine($"Selected map: {map}");
-        Console.WriteLine($"Selected landing coordinates: [{x},{y}]");
-        Console.WriteLine($"Selected unit: {roverUnit}");
-        Console.WriteLine($"Selected sight: {roverSight}");
-        Console.WriteLine($"Selected timeout: {timeOut}");
-        Console.WriteLine("Press enter to start the simulation");
+        logger.LogMessage($"Selected map: {map}");
+        logger.LogMessage($"Selected landing coordinates: [{x},{y}]");
+        logger.LogMessage($"Selected unit: {roverUnit}");
+        logger.LogMessage($"Selected sight: {roverSight}");
+        logger.LogMessage($"Selected timeout: {timeOut}");
+        logger.LogMessage("Press enter to start the simulation");
+        foreach (var symbol in symbolsToMonitor)
+        {
+            logger.LogMessage(symbol);
+        }
         Console.ReadKey();
         Console.Clear();
         
         
         ISimulationRepository simulationRepository = new SimulationRepository(dbFile);
-        
-        string mapFile = $@"{WorkDir}\Resources\{map}";
         Random random = new Random();
-        ILogger logger = new ConsoleLogger();
+        string mapFile = $@"{WorkDir}\Resources\{map}";
+        
         Coordinate landingSpot = new Coordinate(x, y); 
         
         ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         IMapLoader mapLoader = new MapLoader.MapLoader();
         IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
-        IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
-      
         
         Configuration.Configuration configuration = new Configuration.Configuration(
             mapFile: mapFile,
@@ -77,6 +83,7 @@ class Program
 
         IConfigurationValidator configurationValidator = new ConfigurationValidator(mapLoader,coordinateCalculator);
         IOutcomeAnalyzer outcomeAnalyzer = new OutcomeAnalyzer(configuration);
+        
         
         var simulationStep = new SimulationStep(movementRoutines, outcomeAnalyzer, logger, simulationRepository);
         var placeRover = new PlaceRover(configuration, configurationValidator, mapLoader, coordinateCalculator,roverSight);
@@ -97,9 +104,7 @@ class Program
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.BackgroundColor = ConsoleColor.Yellow;
             }
-
             Console.WriteLine(options[i]);
-
             Console.ResetColor();
         }
     }
@@ -130,6 +135,8 @@ class Program
 
         return options[selectedOptionIndex];
     }
+
+    
 }
 
 

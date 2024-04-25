@@ -16,6 +16,11 @@ public class FileLogger : ILogger
         WriteFile(simulationContext.Steps,eventType,simulationContext.ExplorationOutcome.ToString());
     }
 
+    public void LogMessage(string message)
+    {
+        WriteMessage(message);
+    }
+
     
 
 
@@ -34,6 +39,13 @@ public class FileLogger : ILogger
         var path = $"{dir}\\Resources\\FileWriter.txt";
         string text = ($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
         File.WriteAllText(path,text);
+    }
+    
+    private void WriteMessage(string message)
+    {
+        var dir = AppDomain.CurrentDomain.BaseDirectory;
+        var path = $"{dir}\\Resources\\FileWriter.txt";
+        File.WriteAllText(path,message);
     }
 
   

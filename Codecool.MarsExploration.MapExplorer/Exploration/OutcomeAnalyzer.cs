@@ -55,6 +55,6 @@ public class OutcomeAnalyzer : IOutcomeAnalyzer
             encountered += keyValuePair.Value.Count;
         }
 
-        return encountered == mapSize;
+        return encountered == mapSize || simulationContext.Symbols.Contains("&") || simulationContext.Symbols.Contains("#");
     }
 }

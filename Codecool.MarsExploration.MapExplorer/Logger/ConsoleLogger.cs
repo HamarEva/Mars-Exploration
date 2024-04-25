@@ -14,6 +14,11 @@ public class ConsoleLogger : ILogger
         LogMessage(simulationContext.Steps, eventType, simulationContext.ExplorationOutcome.ToString());
     }
 
+    public void LogMessage(string message)
+    {
+        LogMessages(message);
+    }
+
     private void LogMessage(int step, string roverID, int coordinateX, int coordinateY, string eventType)
     {
       
@@ -35,8 +40,11 @@ public class ConsoleLogger : ILogger
                 Console.WriteLine($"STEP {step}; EVENT {eventType}; OUTCOME {outcome.ToUpper()}");
                 Console.ResetColor();
             }
-            
-            
+    }
+
+    private void LogMessages(string message)
+    {
+        Console.WriteLine(message);
     }
 
 
