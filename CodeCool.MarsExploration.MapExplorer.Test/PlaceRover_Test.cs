@@ -37,7 +37,7 @@ namespace CodeCool.MarsExploration.MapExplorer.Test
             var adjacentCoordinates = new List<Coordinate> { new Coordinate(1, 0), new Coordinate(0, 1) };
             _coordinateCalculatorMock.Setup(c => c.GetAdjacentCoordinates(_configuration.startCoordinate, map.Dimension,1)).Returns(adjacentCoordinates);
 
-            var placeRover = new PlaceRover(_configuration, null, _mapLoaderMock.Object, _coordinateCalculatorMock.Object);
+            var placeRover = new PlaceRover(_configuration, null, _mapLoaderMock.Object, _coordinateCalculatorMock.Object,3);
             
             var rover = placeRover.PlaceRoverOnMap("Rover1");
             
