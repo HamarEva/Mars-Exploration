@@ -26,26 +26,18 @@ class Program
         Console.WriteLine("Explore the Mars");
         string[] maps = { "exploration-0.map", "exploration-1.map", "exploration-2.map", "exit" };
         string[] rovers = { "Rover-01", "Rover-02", "WALL-E" };
-
-        string map = "";
-        string roverUnit = "";
-        
        
-
-        Console.CursorVisible = false;
-       map= OptionMenu(maps);
-
-       int x;
-       int y;
         
+        Console.CursorVisible = false;
+        string map = OptionMenu(maps);
         Console.WriteLine("Select the landing coordinates:");
         Console.WriteLine($"X:");
-        x = int.Parse(Console.ReadLine());
+        int x = int.Parse(Console.ReadLine());
         Console.WriteLine( $"Y:");
-        y = int.Parse(Console.ReadLine());
+        int y = int.Parse(Console.ReadLine());
         Console.Clear();
         Console.WriteLine("You have to configure the rover");
-        roverUnit = OptionMenu(rovers);
+        string roverUnit = OptionMenu(rovers);
         Console.Clear();
         Console.WriteLine("Sight that the rover sees:");
         int roverSight = int.Parse(Console.ReadLine());
@@ -70,13 +62,10 @@ class Program
         Random random = new Random();
         ILogger logger = new ConsoleLogger();
         Coordinate landingSpot = new Coordinate(x, y); 
-        ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         
+        ICoordinateCalculator coordinateCalculator = new CoordinateCalculator();
         IMapLoader mapLoader = new MapLoader.MapLoader();
         IMovementRoutines movementRoutines = new MovementRoutines(coordinateCalculator, random);
-        
-        
-        
         IEnumerable<string> symbolsToMonitor = new List<string> { "*", "%" };
       
         
@@ -98,6 +87,7 @@ class Program
         /*---------------------------SIMULATE-----------------------------------*/
         explorationSimulator.Simulate();
     }
+    
     static void PrintMenu(string[] options)
     {
         for (int i = 0; i < options.Length; i++)
@@ -119,7 +109,6 @@ class Program
         ConsoleKeyInfo key;
         do
         {
-            
             PrintMenu(options);
             key = Console.ReadKey(true);
 
@@ -137,14 +126,10 @@ class Program
                     Console.Clear();
                     break;
             }
-            
-
         } while (key.Key != ConsoleKey.Enter);
 
         return options[selectedOptionIndex];
     }
-
-    
 }
 
 
